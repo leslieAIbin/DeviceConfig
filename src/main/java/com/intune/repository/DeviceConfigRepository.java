@@ -13,5 +13,6 @@ public interface DeviceConfigRepository
         JpaSpecificationExecutor<DeviceConfig>,
         Serializable {
     DeviceConfig findByDeviceName(String deviceName);
+    DeviceConfig findByDeviceId(String deviceId);
 
 }

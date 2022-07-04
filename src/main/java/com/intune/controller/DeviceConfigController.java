@@ -6,6 +6,7 @@ import com.intune.exception.DeviceNotFound;
 import com.intune.exception.InternalServerError;
 import com.intune.repository.DeviceConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,12 @@ public class DeviceConfigController {
     Date dateTime = new Date();
     SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
+    /**
+     * Get all device configs
+     * @return
+     */
     @GetMapping("/deviceConfig")
     public Result getAllDeviceConfig() {
-
         try {
             List<DeviceConfig> deviceConfigs = new ArrayList<DeviceConfig>();
             deviceConfigRepository.findAll().forEach(deviceConfigs::add);
@@ -36,32 +39,51 @@ public class DeviceConfigController {
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
         }
-
     }
 
 
-    @GetMapping("/deviceConfig/{id}")
-    public ResponseEntity<DeviceConfig>
-    getDeviceConfigByID(@PathVariable("id") Long id) {
+    /**
+     * get device config by deviceId
+     * @param deviceId
+     * @return
+     */
+    @GetMapping("/deviceConfig/{deviceId}")
+    public Result
+    getDeviceConfigByID(@PathVariable("deviceId") String deviceId) {
 
-        Optional<DeviceConfig> deviceConfigData = deviceConfigRepository.findById(id);
-        if (deviceConfigData.isPresent()) {
-            return new ResponseEntity<>
-                    (deviceConfigData.get(), HttpStatus.OK);
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceId(deviceId);
+        if (!deviceConfigData.equals(null)) {
+            return new Result().success(deviceConfigData);
         } else {
             throw new DeviceNotFound("Invalid Device Id");
         }
 
     }
 
-    @GetMapping("/deviceConfig/deviceName")
-    public Result
-    getDeviceConfigByName(@RequestParam("deviceName") String deviceName) {
 
-        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceName(deviceName);
-        return new Result().success(deviceConfigData);
+    /**
+     * get device config upload by deviceId
+     * @param deviceId
+     * @return
+     */
+    @GetMapping("/deviceConfig/{deviceId}/upload")
+    public Result
+    getDeviceConfigUploadByID(@PathVariable("deviceId") String deviceId) {
+
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceId(deviceId);
+        if (!deviceConfigData.equals(null)) {
+            return new Result().success(deviceConfigData.isLogUpload());
+        } else {
+            throw new DeviceNotFound("Invalid Device Id");
+        }
+
     }
 
+    /**
+     * create device config
+     * @param deviceConfig
+     * @return
+     */
     @PostMapping("/deviceConfig")
     public Result
     createDeviceConfig(@RequestBody DeviceConfig deviceConfig) {
@@ -78,11 +100,16 @@ public class DeviceConfigController {
         }
     }
 
-    @DeleteMapping("/deviceConfig/deviceName")
+    /**
+     * Delete device config
+     * @param deviceId
+     * @return
+     */
+    @DeleteMapping("/deviceConfig/{deviceId}")
     public Result
-    deleteDeviceConfig(@RequestParam("deviceName") String deviceName) {
+    deleteDeviceConfig(@RequestParam("deviceId") String deviceId) {
 
-        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceName(deviceName);
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceId(deviceId);
         if (deviceConfigData != null) {
             deviceConfigRepository.deleteById(deviceConfigData.getId());
             return new Result().success();
@@ -91,13 +118,19 @@ public class DeviceConfigController {
         }
     }
 
-    @PutMapping("/deviceConfig/deviceName")
+
+    /**
+     * Update device config by device id
+     * @param deviceConfig
+     * @return
+     */
+    @PutMapping("/deviceConfig")
     public Result
     updateDeviceConfig(@RequestBody DeviceConfig deviceConfig) {
         if(deviceConfig.getDeviceName() == null) {
             throw new DeviceNotFound("Invalid Device Id");
         }
-        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceName(deviceConfig.getDeviceName());
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceId(deviceConfig.getDeviceId());
         if (deviceConfigData != null) {
             DeviceConfig _deviceConfig = deviceConfigData;
             _deviceConfig.setLogUpload(deviceConfig.isLogUpload());
