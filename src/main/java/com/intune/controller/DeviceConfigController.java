@@ -57,7 +57,6 @@ public class DeviceConfigController {
         } else {
             throw new DeviceNotFound("Invalid Device Id");
         }
-
     }
 
 
@@ -141,4 +140,22 @@ public class DeviceConfigController {
             throw new DeviceNotFound("Invalid Device Id");
         }
     }
+
+    /**
+     * get device config by deviceId
+     * @param deviceName
+     * @return
+     */
+    @GetMapping("/deviceIsUpload/{deviceName}")
+    public Result
+    getDeviceConfigByName(@PathVariable("deviceName") String deviceName) {
+
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceName(deviceName);
+        if (!deviceConfigData.equals(null)) {
+            return new Result().success(deviceConfigData.isLogUpload());
+        } else {
+            throw new DeviceNotFound("Invalid Device Id");
+        }
+    }
+
 }
