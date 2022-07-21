@@ -7,4 +7,6 @@ C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\excepti
 C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\Application.java
 C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\exception\GlobalExceptionHandler.java
 C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\entity\DeviceConfig.java
+C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\repository\DeviceStateRepository.java
 C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\controller\DeviceConfigController.java
+C:\Users\t-aibinzhang\IdeaProjects\DeviceConfig\src\main\java\com\intune\entity\DeviceState.java
