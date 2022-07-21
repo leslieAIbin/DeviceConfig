@@ -205,4 +205,15 @@ public class DeviceConfigController {
     }
 
 
+    @GetMapping("/helloworld")
+    public Result
+    helloworld() {
+        try {
+            return new Result().success("Hello World");
+        } catch (Exception e) {
+            throw new InternalServerError(e.getMessage());
+        }
+    }
+
+
 }
