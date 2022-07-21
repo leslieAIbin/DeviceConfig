@@ -1,0 +1,10 @@
+com\intune\exception\GlobalExceptionHandler.class
+com\intune\controller\DeviceConfigController.class
+com\intune\config\CorsConfig.class
+com\intune\exception\InternalServerError.class
+com\intune\exception\ErrorMessage.class
+com\intune\entity\DeviceConfig.class
+com\intune\entity\Result.class
+com\intune\exception\DeviceNotFound.class
+com\intune\Application.class
+com\intune\repository\DeviceConfigRepository.class

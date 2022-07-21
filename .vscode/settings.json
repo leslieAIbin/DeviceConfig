@@ -1,3 +1,6 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "appService.preDeployTask": "package:DeviceConfig",
+    "appService.deploySubpath": "target\\DeviceConfig-1.0-SNAPSHOT.jar",
+    "appService.defaultWebAppToDeploy": "/subscriptions/b693a332-4d56-47f0-94ac-0c4b0627ef43/microsoft.web/sites/subscriptions/b693a332-4d56-47f0-94ac-0c4b0627ef43/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/IntuneDeviceConfig"
 }
