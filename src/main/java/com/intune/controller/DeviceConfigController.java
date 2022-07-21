@@ -1,10 +1,12 @@
 package com.intune.controller;
 
 import com.intune.entity.DeviceConfig;
+import com.intune.entity.DeviceState;
 import com.intune.entity.Result;
 import com.intune.exception.DeviceNotFound;
 import com.intune.exception.InternalServerError;
 import com.intune.repository.DeviceConfigRepository;
+import com.intune.repository.DeviceStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,8 @@ import java.util.Optional;
 public class DeviceConfigController {
     @Autowired
     DeviceConfigRepository deviceConfigRepository;
-
+    @Autowired
+    DeviceStateRepository deviceStateRepository;
     Date dateTime = new Date();
     SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -157,5 +160,49 @@ public class DeviceConfigController {
             throw new DeviceNotFound("Invalid Device Id");
         }
     }
+
+    /**
+     * get device state by device name
+     * @param deviceName
+     * @return
+     */
+    @GetMapping("/deviceState/{deviceName}")
+    public Result
+    getDeviceStateByName(@PathVariable("deviceName") String deviceName) {
+
+        try {
+            List<DeviceState> deviceStates ;
+            deviceStates = deviceStateRepository.findAllByDeviceName(deviceName);
+            if(deviceStates.isEmpty()){
+                throw new DeviceNotFound("Invalid Device Name");
+            }
+            return new Result().success(deviceStates);
+        } catch (Exception e) {
+            throw new InternalServerError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * create device State
+     * @param deviceState
+     * @return
+     */
+    @PostMapping("/deviceState")
+    public Result
+    createDeviceState(@RequestBody DeviceState deviceState) {
+        try {
+            DeviceState newDeviceState = new DeviceState();
+            newDeviceState.setDeviceName(deviceState.getDeviceName());
+            newDeviceState.setCpu(deviceState.getCpu());
+            newDeviceState.setMemory(deviceState.getMemory());
+            newDeviceState.setActionTime(ft.format(dateTime));
+            deviceStateRepository.save(newDeviceState);
+            return new Result().success(newDeviceState);
+        } catch (Exception e) {
+            throw new InternalServerError(e.getMessage());
+        }
+    }
+
 
 }

@@ -6,16 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
+import java.util.List;
 
-public interface DeviceConfigRepository
-   extends CrudRepository<DeviceConfig, Long>,
+public interface DeviceStateRepository<T>  extends CrudRepository<DeviceConfig, Long>,
         JpaRepository<DeviceConfig, Long>,
         JpaSpecificationExecutor<DeviceConfig>,
         Serializable {
-    DeviceConfig findByDeviceName(String deviceName);
-    DeviceConfig findByDeviceId(String deviceId);
 
-
+    @Query(value = "SELECT * FROM device_state WHERE device_name = ?1 order by id desc limit 10", nativeQuery = true)
+    List<T>  findAllByDeviceName(String device_name);
 }
