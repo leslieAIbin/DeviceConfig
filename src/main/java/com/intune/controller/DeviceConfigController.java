@@ -182,6 +182,40 @@ public class DeviceConfigController {
         }
     }
 
+    /**
+     * get device state by device name
+     * @param deviceName
+     * @return
+     */
+    @GetMapping("/deviceCpu/{deviceName}")
+    public Result
+    getDeviceCpuByName(@PathVariable("deviceName") String deviceName) {
+
+        try {
+            Integer cpu = deviceStateRepository.findCpuByDeviceName(deviceName);
+            return new Result().success(cpu);
+        } catch (Exception e) {
+            throw new InternalServerError(e.getMessage());
+        }
+    }
+    /**
+     * get device state by device name
+     * @param deviceName
+     * @return
+     */
+    @GetMapping("/deviceMemory/{deviceName}")
+    public Result
+    getDeviceMemoryByName(@PathVariable("deviceName") String deviceName) {
+
+        try {
+            Integer memory = deviceStateRepository.findMemoryByDeviceName(deviceName);
+            return new Result().success(memory);
+        } catch (Exception e) {
+            throw new InternalServerError(e.getMessage());
+        }
+    }
+
+
 
     /**
      * create device State

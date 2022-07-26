@@ -18,10 +18,10 @@ public class DeviceState {
     private String deviceName;
 
     @Column(name = "cpu")
-    private int cpu;
+    private float cpu;
 
     @Column(name = "memory")
-    private int memory;
+    private float memory;
 
     @Column(name = "action_time")
     private String actionTime;
