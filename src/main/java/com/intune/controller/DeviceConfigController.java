@@ -243,7 +243,7 @@ public class DeviceConfigController {
     public Result
     helloworld() {
         try {
-            return new Result().success("Hello World");
+            return new Result().success("Hello World 0726");
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
         }
