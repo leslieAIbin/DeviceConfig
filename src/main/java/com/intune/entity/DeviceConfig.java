@@ -25,6 +25,12 @@ public class DeviceConfig {
     @Column(name = "log_upload")
     private boolean logUpload;
 
+    @Column(name = "cpu_check")
+    private boolean cpuCheck;
+
+    @Column(name = "memory_check")
+    private boolean memoryCheck;
+
     @Column(name = "username")
     private String username;
 

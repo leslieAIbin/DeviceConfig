@@ -136,6 +136,8 @@ public class DeviceConfigController {
         if (deviceConfigData != null) {
             DeviceConfig _deviceConfig = deviceConfigData;
             _deviceConfig.setLogUpload(deviceConfig.isLogUpload());
+            _deviceConfig.setCpuCheck(deviceConfig.isCpuCheck());
+            _deviceConfig.setMemoryCheck(deviceConfig.isMemoryCheck());
             _deviceConfig.setActionTime(ft.format(dateTime));
             deviceConfigRepository.save(_deviceConfig);
             return new Result().success(_deviceConfig);
@@ -246,6 +248,39 @@ public class DeviceConfigController {
             return new Result().success("Hello World 0726");
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
+        }
+    }
+
+    /**
+     * get device config by deviceId
+     * @param deviceName
+     * @return
+     */
+    @GetMapping("/deviceCpuCheck/{deviceName}")
+    public Result
+    getDeviceCpuCheckByName(@PathVariable("deviceName") String deviceName) {
+
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceName(deviceName);
+        if (!deviceConfigData.equals(null)) {
+            return new Result().success(deviceConfigData.isCpuCheck());
+        } else {
+            throw new DeviceNotFound("Invalid Device Id");
+        }
+    }
+    /**
+     * get device config by deviceId
+     * @param deviceName
+     * @return
+     */
+    @GetMapping("/deviceMemoryCheck/{deviceName}")
+    public Result
+    getDeviceMemoryCheckByName(@PathVariable("deviceName") String deviceName) {
+
+        DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceName(deviceName);
+        if (!deviceConfigData.equals(null)) {
+            return new Result().success(deviceConfigData.isMemoryCheck());
+        } else {
+            throw new DeviceNotFound("Invalid Device Id");
         }
     }
 
