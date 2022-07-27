@@ -24,5 +24,5 @@ public class DeviceState {
     private float memory;
 
     @Column(name = "action_time")
-    private String actionTime;
+    private Date actionTime;
 }

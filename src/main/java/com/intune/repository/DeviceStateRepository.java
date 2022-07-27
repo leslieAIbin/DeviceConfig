@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public interface DeviceStateRepository<T>  extends CrudRepository<DeviceConfig, Long>,
@@ -24,4 +25,7 @@ public interface DeviceStateRepository<T>  extends CrudRepository<DeviceConfig, 
 
     @Query(value = "SELECT memory FROM device_state WHERE device_name = ?1 order by id desc limit 1", nativeQuery = true)
     Integer  findMemoryByDeviceName(String device_name);
+
+    @Query(value = "SELECT action_time FROM device_state WHERE device_name = ?1 order by id desc limit 1", nativeQuery = true)
+    String findTimeByDeviceName(String device_name);
 }

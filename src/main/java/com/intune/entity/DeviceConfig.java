@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Data
@@ -35,7 +36,7 @@ public class DeviceConfig {
     private String username;
 
     @Column(name = "action_time")
-    private String actionTime;
+    private Date actionTime;
 
     @Column(name = "device_id")
     private String deviceId;

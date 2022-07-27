@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class DeviceConfigController {
     DeviceConfigRepository deviceConfigRepository;
     @Autowired
     DeviceStateRepository deviceStateRepository;
-    Date dateTime = new Date();
+
     SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
@@ -90,11 +91,12 @@ public class DeviceConfigController {
     public Result
     createDeviceConfig(@RequestBody DeviceConfig deviceConfig) {
         try {
+            Date dateTime = new Date();
             DeviceConfig newDeviceConfig = new DeviceConfig();
             newDeviceConfig.setDeviceName(deviceConfig.getDeviceName());
             newDeviceConfig.setLogUpload(true);
             newDeviceConfig.setUsername(deviceConfig.getUsername());
-            newDeviceConfig.setActionTime(ft.format(dateTime));
+            newDeviceConfig.setActionTime(dateTime);
             deviceConfigRepository.save(newDeviceConfig);
             return new Result().success(newDeviceConfig);
         } catch (Exception e) {
@@ -134,11 +136,12 @@ public class DeviceConfigController {
         }
         DeviceConfig deviceConfigData = deviceConfigRepository.findByDeviceId(deviceConfig.getDeviceId());
         if (deviceConfigData != null) {
+            Date dateTime = new Date();
             DeviceConfig _deviceConfig = deviceConfigData;
             _deviceConfig.setLogUpload(deviceConfig.isLogUpload());
             _deviceConfig.setCpuCheck(deviceConfig.isCpuCheck());
             _deviceConfig.setMemoryCheck(deviceConfig.isMemoryCheck());
-            _deviceConfig.setActionTime(ft.format(dateTime));
+            _deviceConfig.setActionTime(dateTime);
             deviceConfigRepository.save(_deviceConfig);
             return new Result().success(_deviceConfig);
         } else {
@@ -194,7 +197,15 @@ public class DeviceConfigController {
     getDeviceCpuByName(@PathVariable("deviceName") String deviceName) {
 
         try {
-            Integer cpu = deviceStateRepository.findCpuByDeviceName(deviceName);
+            Integer cpu  = deviceStateRepository.findCpuByDeviceName(deviceName);
+
+            String dateTime = deviceStateRepository.findTimeByDeviceName(deviceName);
+            DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date1 = fmt.parse(dateTime);
+            Date date2 = new Date();
+            if (Math.abs(date1.getTime() - date2.getTime())> 10 * 1000) {
+                return new Result().success("cpu");
+            }
             return new Result().success(cpu);
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
@@ -228,17 +239,19 @@ public class DeviceConfigController {
     public Result
     createDeviceState(@RequestBody DeviceState deviceState) {
         try {
+            Date dateTime = new Date();
             DeviceState newDeviceState = new DeviceState();
             newDeviceState.setDeviceName(deviceState.getDeviceName());
             newDeviceState.setCpu(deviceState.getCpu());
             newDeviceState.setMemory(deviceState.getMemory());
-            newDeviceState.setActionTime(ft.format(dateTime));
+            newDeviceState.setActionTime(dateTime);
             deviceStateRepository.save(newDeviceState);
             return new Result().success(newDeviceState);
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
         }
     }
+
 
 
     @GetMapping("/helloworld")
