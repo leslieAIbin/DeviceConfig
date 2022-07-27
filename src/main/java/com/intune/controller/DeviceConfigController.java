@@ -219,9 +219,15 @@ public class DeviceConfigController {
     @GetMapping("/deviceMemory/{deviceName}")
     public Result
     getDeviceMemoryByName(@PathVariable("deviceName") String deviceName) {
-
         try {
-            Integer memory = deviceStateRepository.findMemoryByDeviceName(deviceName);
+            Integer memory  = deviceStateRepository.findMemoryByDeviceName(deviceName);
+            String dateTime = deviceStateRepository.findTimeByDeviceName(deviceName);
+            DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date1 = fmt.parse(dateTime);
+            Date date2 = new Date();
+            if (Math.abs(date1.getTime() - date2.getTime())> 10 * 1000) {
+                return new Result().success("memory");
+            }
             return new Result().success(memory);
         } catch (Exception e) {
             throw new InternalServerError(e.getMessage());
